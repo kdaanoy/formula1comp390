@@ -10,19 +10,24 @@ import {
   Customized,
 } from "recharts";
 
-export default function Session({ activeYear, activeGP, activeSession, setLaps }) {
+export default function Session({
+  activeYear,
+  activeGP,
+  activeSession,
+  setLaps,
+}) {
   const [newData, setData] = useState([]);
-  const [new_mapdata, set_mapData] = useState([]);
+  const [newMapdata, setMapData] = useState([]);
   const [fastestTimes, setFastestTimes] = useState({ s1: 0, s2: 0, s3: 0 });
   const [sessionKey, setSessionKey] = useState(null);
   const [fastestDriverHeadshot, setFastestDriverHeadshot] = useState(null);
 
   const safeYear = activeYear || "2025";
-  const safeGP = activeGP || "Yas Marina Circuit"; 
+  const safeGP = activeGP || "Yas Marina Circuit";
   const safeSession = activeSession || "Race";
 
   const displayData = newData;
-  const display_mapData = new_mapdata;
+  const displayMapData = newMapdata;
 
   useEffect(() => {
     Promise.all([
@@ -33,7 +38,14 @@ export default function Session({ activeYear, activeGP, activeSession, setLaps }
       fetch("/data/Laps.csv").then((res) => res.text()),
       fetch("/data/Team.csv").then((res) => res.text()),
     ]).then(
-      async ([circuitCsv, sessionCsv, resultsCsv, driversCsv, lapsCsv, teamsCsv]) => {
+      async ([
+        circuitCsv,
+        sessionCsv,
+        resultsCsv,
+        driversCsv,
+        lapsCsv,
+        teamsCsv,
+      ]) => {
         const circuits = Papa.parse(circuitCsv, { header: true }).data;
         const sessions = Papa.parse(sessionCsv, { header: true }).data;
         const allResults = Papa.parse(resultsCsv, { header: true }).data;
@@ -48,11 +60,11 @@ export default function Session({ activeYear, activeGP, activeSession, setLaps }
           (s) =>
             s.CircuitID?.toString().trim() === circuit.ID?.toString().trim() &&
             s.DateOfSession.includes(safeYear) &&
-            s.Type === safeSession
+            s.Type === safeSession,
         );
         if (!session) return;
 
-        set_mapData([
+        setMapData([
           {
             name: circuit.OfficialName,
             circuit: circuit.Name,
@@ -80,30 +92,22 @@ export default function Session({ activeYear, activeGP, activeSession, setLaps }
 
             return {
               pos: r.Position,
-              driver: driverInfo
-                ? driverInfo.DriverName.trim()
-                    .split(" ")
-                    .at(-1)
-                    .substring(0, 3)
-                    .toUpperCase()
-                : "UNK",
-              team: teamInfo ? teamInfo.TeamName : "TEAM",
-              color: teamInfo ? teamInfo.Color : "#FFFFFF",
+              driver: driverInfo ? driverInfo.DriverName.trim()
+                .split(" ")
+                .at(-1)
+                .substring(0, 3)
+                .toUpperCase()
+                : "drivererror",
+              team: teamInfo ? teamInfo.TeamName : "teamerror",
+              color: teamInfo ? teamInfo.Color : "white",
               gap: r.TimeGap || "0",
               active: i % 2 === 0 ? false : true,
             };
           });
 
-        const parseF1Time = (timeStr) => {
-          if (
-            !timeStr ||
-            typeof timeStr !== "string" ||
-            timeStr === "0" ||
-            timeStr.includes("NaT")
-          )
-            return Infinity;
+        const parseTime = (timeStr) => {
           const match = timeStr.match(/(\d+):(\d+):(\d+\.\d+)/);
-          if (!match) return Infinity;
+          if (!match) return 99;
           const hours = parseInt(match[1]);
           const minutes = parseInt(match[2]);
           const seconds = parseFloat(match[3]);
@@ -114,106 +118,120 @@ export default function Session({ activeYear, activeGP, activeSession, setLaps }
 
         const sessionLaps = allLaps.filter((l) => l.SessionID === session.ID);
         const driverMap = Object.fromEntries(
-  allDrivers.map((d) => [d.ID.toString(), d])
-);
+          allDrivers.map((d) => [d.ID.toString(), d]),
+        );
 
-const teamMap = Object.fromEntries(
-  allTeams.map((t) => [t.ID.toString(), t])
-);
+        const tyreData = {};
 
-// group laps by driver
-const tyreData = {};
+        const driverPositionMap = Object.fromEntries(
+          filteredResults.map((r) => [r.driver, r.pos, r.color]),
+        );
 
-sessionLaps.forEach((lap) => {
-  const driver = driverMap[lap.DriverID];
-  if (!driver) return;
+        sessionLaps.forEach((lap) => {
+          const driver = driverMap[lap.DriverID];
+          if (!driver) return;
 
-  const driverName = driver.DriverName.split(" ")
-    .at(-1)
-    .substring(0, 3)
-    .toUpperCase();
+          const driverName = driver.DriverName.split(" ")
+            .at(-1)
+            .substring(0, 3)
+            .toUpperCase();
 
-  if (!tyreData[driverName]) {
-    tyreData[driverName] = [];
-  }
+          if (!tyreData[driverName]) {
+            tyreData[driverName] = [];
+          }
 
-  tyreData[driverName].push({
-    lap: Number(lap.LapNumber),
-    tyre: lap.TyreCompound,
-  });
-});
+          tyreData[driverName].push({
+            lap: Number(lap.LapNumber),
+            tyre: lap.TyreCompound,
+            time: lap.LapTimeSeconds,
+          });
+        });
 
-const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
-  driver,
-  laps: laps.sort((a, b) => a.lap - b.lap),
-}));
+        const chartData = Object.entries(tyreData)
+          .map(([driver, laps]) => ({
+            driver,
+            laps: laps.sort((a, b) => a.lap - b.lap),
+            color:
+              filteredResults.find((r) => r.driver === driver)?.color ||
+              "white",
+          }))
+          .sort((a, b) => {
+            const pos1 = driverPositionMap[a.driver] || Infinity;
+            const pos2 = driverPositionMap[b.driver] || Infinity;
+            return pos1 - pos2;
+          });
 
         setLaps(chartData);
         console.log(chartData);
 
         const defaultLap = {
-          Sector1Time: "0:0:0.0",
-          Sector2Time: "0:0:0.0",
-          Sector3Time: "0:0:0.0",
-          Driver: "UNK",
+          Sector1Time: "0.0",
+          Sector2Time: "0.0",
+          Sector3Time: "0.0",
+          Driver: "drivererror",
           LapNumber: 0,
-          Team: "TEAM",
-          Color: "#FFFFFF",
+          Team: "teamerror",
+          Color: "white",
         };
 
         const fastestS1Lap =
           sessionLaps.length > 0
             ? sessionLaps.reduce(
-                (fastest, lap) =>
-                  parseF1Time(lap.Sector1Time) <
-                  parseF1Time(fastest.Sector1Time)
-                    ? lap
-                    : fastest,
-                sessionLaps[0],
-              )
+              (fastest, lap) =>
+                parseTime(lap.Sector1Time) <
+                  parseTime(fastest.Sector1Time)
+                  ? lap
+                  : fastest,
+              sessionLaps[0],
+            )
             : defaultLap;
 
         const fastestS2Lap =
           sessionLaps.length > 0
             ? sessionLaps.reduce(
-                (fastest, lap) =>
-                  parseF1Time(lap.Sector2Time) <
-                  parseF1Time(fastest.Sector2Time)
-                    ? lap
-                    : fastest,
-                sessionLaps[0],
-              )
+              (fastest, lap) =>
+                parseTime(lap.Sector2Time) <
+                  parseTime(fastest.Sector2Time)
+                  ? lap
+                  : fastest,
+              sessionLaps[0],
+            )
             : defaultLap;
 
         const fastestS3Lap =
           sessionLaps.length > 0
             ? sessionLaps.reduce(
-                (fastest, lap) =>
-                  parseF1Time(lap.Sector3Time) <
-                  parseF1Time(fastest.Sector3Time)
-                    ? lap
-                    : fastest,
-                sessionLaps[0],
-              )
+              (fastest, lap) =>
+                parseTime(lap.Sector3Time) <
+                  parseTime(fastest.Sector3Time)
+                  ? lap
+                  : fastest,
+              sessionLaps[0],
+            )
             : defaultLap;
 
         const fastestLap =
           sessionLaps.length > 0
             ? sessionLaps.reduce(
-                (fastest, lap) =>
-                  parseF1Time(lap.LapTimeSeconds) <
-                  parseF1Time(fastest.LapTimeSeconds)
-                    ? lap
-                    : fastest,
-                sessionLaps[0],
-              )
+              (fastest, lap) =>
+                parseTime(lap.LapTimeSeconds) <
+                  parseTime(fastest.LapTimeSeconds)
+                  ? lap
+                  : fastest,
+              sessionLaps[0],
+            )
             : defaultLap;
 
         const getDriverInfo = (lap) => {
           if (!lap || !lap.DriverID)
-            return { driver: "UNK", fullname: "Unknown Driver", team: "TEAM", color: "#FFFFFF" };
+            return {
+              driver: "drivererror",
+              fullname: "driver error",
+              team: "teamerror",
+              color: "white",
+            };
 
-          const driverID = lap.DriverID.toString().trim(); 
+          const driverID = lap.DriverID.toString();
           console.log(driverID);
           const driver = allDrivers.find((d) => d.ID.toString() === driverID);
           console.log(driver);
@@ -224,13 +242,13 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
           return {
             driver: driver
               ? driver.DriverName.split(" ")
-                  .at(-1)
-                  .substring(0, 3)
-                  .toUpperCase()
-              : "UNK",
-            fullname: driver ? driver.DriverName : "Unknown Driver",
-            team: team ? team.TeamName : "TEAM",
-            color: team ? team.Color : "#FFFFFF",
+                .at(-1)
+                .substring(0, 3)
+                .toUpperCase()
+              : "drivererror",
+            fullname: driver ? driver.DriverName : "driver error",
+            team: team ? team.TeamName : "teamerror",
+            color: team ? team.Color : "white",
           };
         };
 
@@ -244,42 +262,47 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
 
         const fetchOpenF1Drivers = async () => {
           console.log("Fetching session key...");
-          
+
           if (circuit.Country === "UK") {
             circuit.Country = "United Kingdom";
-          }
-
-          else if (circuit.Country === "USA") {
+          } else if (circuit.Country === "USA") {
             circuit.Country = "United States";
-          }
-
-          else if (circuit.Country === "UAE") {
+          } else if (circuit.Country === "UAE") {
             circuit.Country = "United Arab Emirates";
           }
 
-          const response = await fetch(
-            `https://api.openf1.org/v1/sessions?country_Name=${encodeURIComponent(circuit.Country)}&year=${safeYear}&session_name=${encodeURIComponent(safeSession)}`
-          );
-          const sessionsData = await response.json();
+          try {
+            const response = await fetch(
+              `https://api.openf1.org/v1/sessions?country_Name=${encodeURIComponent(circuit.Country)}&year=${safeYear}&session_name=${encodeURIComponent(safeSession)}`,
+            );
+            const sessionsData = await response.json();
 
-          if (!sessionsData || sessionsData.length === 0) {
-            console.warn("No sessions found from OpenF1 API");
-            return;
+            if (!sessionsData || sessionsData.length === 0) {
+              console.warn("No sessions found from OpenF1 API");
+              return;
+            }
+
+            const sessionKey = sessionsData[0].session_key;
+            console.log("Session key:", sessionKey);
+
+            setSessionKey(sessionKey);
+
+            const driverResponse = await fetch(
+              `https://api.openf1.org/v1/drivers?name_acronym=${fastestLapInfo.driver}&session_key=${sessionKey}`,
+            );
+            const driverData = await driverResponse.json();
+
+            console.log("Fastest driver info:", driverData[0]);
+            setFastestDriverHeadshot(driverData[0].headshot_url);
+          } catch (error) {
+            console.error("Error fetching from OpenF1 API:", error);
+            return {
+              driver: "drivererror",
+              fullname: "driver error",
+              team: "teamerror",
+              color: "white",
+            };
           }
-
-          const sessionKey = sessionsData[0].session_key;
-          console.log("Session key:", sessionKey);
-
-          setSessionKey(sessionKey);
-
-          const fastestDriverNumber = 1; 
-          const driverResponse = await fetch(
-            `https://api.openf1.org/v1/drivers?name_acronym=${fastestLapInfo.driver}&session_key=${sessionKey}`
-          );
-          const driverData = await driverResponse.json();
-
-          console.log("Fastest driver info:", driverData[0]);
-          setFastestDriverHeadshot(driverData[0].headshot_url);
         };
 
         const fastestDriverInfo = await fetchOpenF1Drivers();
@@ -310,9 +333,9 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
         }
 
         setFastestTimes({
-          s1: parseF1Time(fastestS1Lap.Sector1Time),
-          s2: parseF1Time(fastestS2Lap.Sector2Time),
-          s3: parseF1Time(fastestS3Lap.Sector3Time),
+          s1: parseTime(fastestS1Lap.Sector1Time),
+          s2: parseTime(fastestS2Lap.Sector2Time),
+          s3: parseTime(fastestS3Lap.Sector3Time),
           fastestLap: parseFloat(fastestLap.LapTimeSeconds),
 
           s1Driver: s1Info.driver,
@@ -353,9 +376,8 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
         {displayData.map((row, i) => (
           <div
             key={i}
-            className={`grid grid-cols-[3.5rem_1fr_4rem] items-center w-full px-4 py-2 ${
-              row.active ? "rounded-md bg-[#2d2d35]" : ""
-            }`}
+            className={`grid grid-cols-[3.5rem_1fr_4rem] items-center w-full px-4 py-2 ${row.active ? "rounded-md bg-[#2d2d35]" : ""
+              }`}
           >
             <div className="flex items-center gap-3">
               <p className="font-formula1bold text-sm min-w-[15px]">
@@ -385,10 +407,10 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
           </div>
         ))}
       </div>
-      
+
       <div className="flex flex-col items-center gap-5">
         <div className="w-[800px] h-auto bg-[#14131a] brightness-125 shadow-[0_0_10px_#000000] rounded-[22px] overflow-hidden flex flex-col border border-white/10">
-          {display_mapData.map((row, i) => (
+          {displayMapData.map((row, i) => (
             <div key={i} className="flex flex-col h-full w-full">
               <div className="w-full flex justify-center py-6 gap-2">
                 <img
@@ -409,7 +431,9 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                     <p className="font-titiliumbold p-0.5">{row.date}</p>
                   </div>
                   <div className="rounded-full shadow-sm bg-[#2d2d35] px-3 gap-3 flex items-center">
-                    <p className="font-titiliumbold p-0.5">{row.temperature}°C</p>
+                    <p className="font-titiliumbold p-0.5">
+                      {row.temperature}°C
+                    </p>
                   </div>
                 </div>
               </div>
@@ -453,9 +477,9 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                   </defs>
 
                   <path
-                    d={`${row.sector1}${row.sector2}${row.sector3}`} 
+                    d={`${row.sector1}${row.sector2}${row.sector3}`}
                     stroke="white"
-                    strokeWidth="12" 
+                    strokeWidth="12"
                     fill="none"
                     filter="url(#whiteGlow)"
                     strokeLinecap="round"
@@ -466,8 +490,6 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                     stroke={fastestTimes.s1Color || "#d400ff"}
                     strokeWidth="3"
                     fill="none"
-                    filter="url(#glow)"
-                    strokeLinecap="round"
                   />
 
                   <path
@@ -475,8 +497,7 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                     stroke={fastestTimes.s2Color || "#00ffbf"}
                     strokeWidth="3"
                     fill="none"
-                    filter="url(#glow)"
-                    strokeLinecap="round"
+
                   />
 
                   <path
@@ -484,8 +505,7 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                     stroke={fastestTimes.s3Color || "#ffee00"}
                     strokeWidth="3"
                     fill="none"
-                    filter="url(#glow)"
-                    strokeLinecap="round"
+
                   />
                 </svg>
 
@@ -498,7 +518,7 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                       {fastestTimes.s1Driver}
                     </p>
                     <p className="text-[#b624ff] font-formula1bold">
-                      {fastestTimes.s1.toFixed(3)}
+                      S1: {fastestTimes.s1}
                     </p>
                   </div>
                   <div className="text-center">
@@ -509,7 +529,7 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                       {fastestTimes.s2Driver}
                     </p>
                     <p className="text-[#b624ff] font-formula1bold">
-                      {fastestTimes.s2.toFixed(3)}
+                      S2: {fastestTimes.s2}
                     </p>
                   </div>
                   <div className="text-center">
@@ -520,7 +540,7 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                       {fastestTimes.s3Driver}
                     </p>
                     <p className="text-[#b624ff] font-formula1bold">
-                      {fastestTimes.s3.toFixed(3)}
+                      S3: {fastestTimes.s3}
                     </p>
                   </div>
                 </div>
@@ -547,7 +567,9 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
                   <span className="text-[10px] text-gray-500 font-formula1">
                     CORNERS
                   </span>
-                  <span className="font-formula1bold text-sm">{row.corners}</span>
+                  <span className="font-formula1bold text-sm">
+                    {row.corners}
+                  </span>
                 </div>
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] text-gray-500 font-formula1">
@@ -562,46 +584,50 @@ const chartData = Object.entries(tyreData).map(([driver, laps]) => ({
           ))}
         </div>
 
-        {display_mapData.map((row, i) => (
-  <div
-    key={`fastest-${i}`}
-    className="relative w-[800px] h-auto shadow-lg rounded-[22px] overflow-hidden flex border border-white/10"
-    style={{ backgroundColor: fastestTimes.fastestLapColor || "#14131a" }}
-  >
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <p className="text-[140px] font-formula1bold italic text-white/30 tracking-widest select-none">
-        FASTEST
-      </p>
-    </div>
+        {displayMapData.map((row, i) => (
+          <div
+            key={`fastest-${i}`}
+            className="relative w-[800px] h-auto shadow-lg rounded-[22px] overflow-hidden flex border border-white/10"
+            style={{
+              backgroundColor: fastestTimes.fastestLapColor || "#14131a",
+            }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center ">
+              <p className="text-[140px] font-formula1bold italic text-white/30 tracking-widest select-none">
+                FASTEST
+              </p>
+            </div>
 
-  <div className="relative flex h-full w-full items-end p-1">
-    
-    <div
-      className="absolute w-32 h-32 translate-x-12"
-      style={{
-        backgroundImage: `url(${fastestDriverHeadshot})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    />
+            <div className="relative flex h-full w-full items-end p-1">
+              <div
+                className="absolute w-32 h-32 translate-x-12"
+                style={{
+                  backgroundImage: `url(${fastestDriverHeadshot})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              />
 
-      <div className="backdrop-blur-md bg-white/2 border border-white/20 rounded-xl px-3 py-1 shadow-lg">
-        <p className="font-formula1bold text-[22px] uppercase tracking-tighter">
-          {fastestTimes.fastestLapDriver || "Unknown Driver"}
-        </p>
+              <div className="backdrop-blur-md bg-white/2 border border-white/20 rounded-xl px-3 py-1 shadow-lg">
+                <p className="font-formula1bold text-[22px] uppercase tracking-tighter">
+                  {fastestTimes.fastestLapDriver || "Unknown Driver"}
+                </p>
+              </div>
+              <div className="flex flex-col justify-center items-center gap-1 pl-50">
+                <p className="font-formula1bold text-[30px] text-white">
+                  Lap {fastestTimes.fastestLapLap || "-"}
+                </p>
+                <p className="font-formula1bold text-[53px] text-white">
+                  {fastestTimes.fastestLap
+                    ? fastestTimes.fastestLap.toFixed(3)
+                    : "0.000"}
+                  s
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="flex flex-col justify-center items-center gap-1 pl-50">
-    <p className="font-formula1bold text-[30px] text-white">
-      Lap {fastestTimes.fastestLapLap || "-"}
-    </p>
-    <p className="font-formula1bold text-[53px] text-white">
-      {fastestTimes.fastestLap ? fastestTimes.fastestLap.toFixed(3) : "0.000"}s
-    </p>
-  </div>
-    </div>
-  </div>
-))}
-      </div>    
     </div>
   );
 }

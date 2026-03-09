@@ -1,7 +1,7 @@
-"ID",DriverName,Color,TeamID,DriverNumber,Year
+ID,DriverName,Color,TeamID,DriverNumber,Year
 0,Lewis Hamilton,#00f5d0,4,44,2018
 1,Sebastian Vettel,#dc0000,0,5,2018
-2,Kimi R�ikk�nen,#dc0000,0,7,2018
+2,Kimi Räikkönen,#dc0000,0,7,2018
 3,Max Verstappen,#1e41ff,5,33,2018
 4,Valtteri Bottas,#00f5d0,4,77,2018
 5,Daniel Ricciardo,#1e41ff,5,3,2018
@@ -32,7 +32,7 @@
 30,Daniel Ricciardo,#fff500,6,3,2019
 31,Sergio Perez,#ff87bc,15,11,2019
 32,Lando Norris,#ff8000,3,4,2019
-33,Kimi R�ikk�nen,#900000,10,7,2019
+33,Kimi Räikkönen,#900000,10,7,2019
 34,Daniil Kvyat,#2b4562,8,26,2019
 35,Nico Hulkenberg,#fff500,6,27,2019
 36,Lance Stroll,#ff87bc,15,18,2019
@@ -56,7 +56,7 @@
 54,Sebastian Vettel,#dc0000,0,5,2020
 55,Daniil Kvyat,#2b4562,21,26,2020
 56,Nico Hulkenberg,#ff87bc,15,27,2020
-57,Kimi R�ikk�nen,#900000,10,7,2020
+57,Kimi Räikkönen,#900000,10,7,2020
 58,Antonio Giovinazzi,#900000,10,99,2020
 59,George Russell,#00a0dd,9,63,2020
 60,George Russell,#00a0dd,4,63,2021
@@ -80,7 +80,7 @@
 78,Lance Stroll,#00665e,33,18,2021
 79,Yuki Tsunoda,#2b4562,21,22,2021
 80,George Russell,#00a0dd,9,63,2022
-81,Kimi R�ikk�nen,#900000,10,7,2022
+81,Kimi Räikkönen,#900000,10,7,2022
 82,Nicholas Latifi,#00a0dd,9,6,2022
 83,Antonio Giovinazzi,#900000,10,99,2022
 84,Mick Schumacher,#b6babd,2,47,2022
@@ -139,7 +139,7 @@
 137,Lewis Hamilton,#27f4d2,4,44,2024
 138,Sergio Perez,#0600ef,5,11,2024
 139,Fernando Alonso,#00665f,33,14,2024
-140,Pierre Gasly,#ff87bc,32,10,2024
+140,Pierre Gasly,#ff87bc,52,10,2024
 141,Nico Hulkenberg,#b6babd,2,27,2024
 142,Yuki Tsunoda,#364aa9,66,22,2024
 143,Lance Stroll,#00665f,33,18,2024
@@ -179,7 +179,7 @@
 177,Franco Colapinto,#ff87bc,32,43,2025
 178,Jack Doohan,#ff87bc,32,7,2025
 179,Esteban Ocon,#ff87bc,15,31,2018
-180,Kimi R�ikk�nen,#900000,80,7,2020
+180,Kimi Räikkönen,#900000,80,7,2020
 181,Antonio Giovinazzi,#900000,80,99,2020
 182,Esteban Ocon,#fe86bc,81,31,2022
 183,Fernando Alonso,#fe86bc,81,14,2022
@@ -204,3 +204,21 @@
 202,Robert Kubica,#00a0dd,9,88,2019
 203,George Russell,#00a0dd,9,63,2019
 204,Kimi Räikkönen,#900000,7,7,2019
+205,Mick Schumacher,#b6babd,45,47,2021
+206,Antonio Giovinazzi,#900000,10,99,2021
+207,Nikita Mazepin,#b6babd,12,9,2021
+208,Kimi Räikkönen,#900000,10,7,2021
+209,Lance Stroll,#00665e,33,18,2022
+210,Yuki Tsunoda,#2b4562,21,22,2022
+211,Alexander Albon,#00a0dd,19,23,2022
+212,Guanyu Zhou,#900000,7,24,2022
+213,Pierre Gasly,#2b4562,21,10,2022
+214,Kevin Magnussen,#00665e,35,20,2023
+215,Esteban Ocon,#2b4562,21,31,2023
+216,Logan Sargeant,#00a0dd,9,2,2023
+217,Valtteri Bottas,#900000,10,77,2023
+218,Daniel Ricciardo,#2b4562,21,3,2023
+220,Jack Doohan,#fe86bc,52,61,2024
+222,Nicholas Latifi,#00a0dd,19,6,2020
+224,Kevin Magnussen,#00665e,35,20,2020
+226,Pietro Fittipaldi,#00665e,35,51,2020

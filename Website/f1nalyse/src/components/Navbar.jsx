@@ -12,7 +12,7 @@ import Papa from "papaparse";
 
 const yearInfo = ["2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018"]
 
-const session_order = {
+const sessionOrder = {
     "Practice 1": 1,
     "Practice 2": 2,
     "Practice 3": 3,
@@ -23,7 +23,7 @@ const session_order = {
     "Race": 8 
 };
 
-const circuit_order = {
+const circuitOrder = {
     "Australian Grand Prix": 1,
     "United States Grand Prix": 18,
     "Bahrain Grand Prix": 4,
@@ -82,7 +82,7 @@ export default function Navbar({activeYear, setActiveYear, activeGP, setActiveGP
                     return parseInt(year) === parseInt(activeYear);
                 });
 
-                const distinctGPs = [...new Set(gpYears.map(r => r.CircuitID))];
+                const distinctGps = [...new Set(gpYears.map(r => r.CircuitID))];
 
                 fetch(`/data/Circuit.csv`)
                     .then(res => res.text())
@@ -90,15 +90,15 @@ export default function Navbar({activeYear, setActiveYear, activeGP, setActiveGP
                         const circuitParsed = Papa.parse(csv, { header: true });
                         console.log(circuitParsed);
                         const gpName = circuitParsed.data
-                            .filter(row => distinctGPs.includes(row.ID))
+                            .filter(row => distinctGps.includes(row.ID))
                             .map(row => row.Name);
                         console.log(gpName);
 
-                        const sorted_gps = gpName.sort((a, b) => {
-                            return (circuit_order[a] || 100) - (circuit_order[b] || 100)
+                        const sortedGps = gpName.sort((a, b) => {
+                            return (circuitOrder[a] || 100) - (circuitOrder[b] || 100)
                         })
 
-                    setGPS(sorted_gps);
+                    setGPS(sortedGps);
                 })
                 
             });
@@ -132,7 +132,7 @@ export default function Navbar({activeYear, setActiveYear, activeGP, setActiveGP
 
                         const distinctSessions = [...new Set(gpSessions.map(r => r.Type))];
                         const sortedSessions = distinctSessions.sort((a, b) => {
-                            return (session_order[a] || 10) - (session_order[b] || 10)
+                            return (sessionOrder[a] || 10) - (sessionOrder[b] || 10)
                         })
                         console.log(sortedSessions);
 

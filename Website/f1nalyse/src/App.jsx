@@ -33,7 +33,9 @@ function App() {
         laps={laps}
         activeYear={activeYear}
       />
-      <StatFeature2 />
+      <StatFeature2 
+        laps={laps}
+      />
       <StatFeature3 />
     </div>
   )

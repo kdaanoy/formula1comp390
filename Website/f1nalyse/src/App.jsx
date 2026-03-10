@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar"
 import Session from "./components/Session"
 import StatFeature1 from "./components/StatFeature1"
 import StatFeature2 from "./components/StatFeature2"
-import StatFeature3 from "./components/StatFeature3"
+import Predict2026 from "./components/Predict2026"
 import { useState, useEffect } from "react";
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
   const [gps, setGPS] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [laps, setLaps] = useState([]);
+  const [activatePredict, setActivatePredict] = useState(false);
 
   return (
     <div className = "pt-25 min-h-screen bg-[#14131a] text-white overflow-hidden">
@@ -21,6 +22,7 @@ function App() {
         activeSession={activeSession} setActiveSession={setActiveSession}
         gps={gps} setGPS={setGPS}
         sessions={sessions} setSessions={setSessions}
+        setActivatePredict={setActivatePredict}
       />
       
       <Session 
@@ -36,7 +38,10 @@ function App() {
       <StatFeature2 
         laps={laps}
       />
-      <StatFeature3 />
+      <Predict2026 
+        activatePredict={activatePredict}
+        close={() => setActivatePredict(false)}
+      />
     </div>
   )
 }

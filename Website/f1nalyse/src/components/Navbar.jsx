@@ -3,6 +3,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { GiFullMotorcycleHelmet } from "react-icons/gi";
 import { FaRoad } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import { FaQuestion } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import MenuYear from "./MenuYear";
 import MenuGP from "./MenuGP";
@@ -57,7 +58,7 @@ const circuitOrder = {
     "Las Vegas Grand Prix": 21
 };
 
-export default function Navbar({activeYear, setActiveYear, activeGP, setActiveGP, activeSession, setActiveSession, gps, setGPS, sessions, setSessions }) {
+export default function Navbar({activeYear, setActiveYear, activeGP, setActiveGP, activeSession, setActiveSession, gps, setGPS, sessions, setSessions, setActivatePredict }) {
     const [activeYearMenu, setActiveYearMenu] = useState(false);
     const [activeGPMenu, setActiveGPMenu] = useState(false);
     const [activeSessionMenu, setActiveSessionMenu] = useState(false);
@@ -265,6 +266,17 @@ export default function Navbar({activeYear, setActiveYear, activeGP, setActiveGP
                             })}
                         </ul>
                     </div>
+                </div>
+
+                <div className="relative w-full max-w-[170px]">
+                    <button
+                    onClick={() => {
+                        setActivatePredict(true);
+                    }}
+                    className={`text-white rounded-md bg-[#e10600] p-1.5 w-full rounded hover:bg-[#e10600]/90 duration-70 flex items-center gap-1 cursor-pointer hover:outline-2 hover:outline-white ease-in`}>
+                        <FaQuestion />
+                        <p className="font-formula1bold pl-1.5 flex-1 text-left truncate">Predict 2026</p>
+                    </button> 
                 </div>
             </div>
         </div>

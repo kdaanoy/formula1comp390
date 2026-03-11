@@ -23,7 +23,7 @@ function App() {
         gps={gps} setGPS={setGPS}
         sessions={sessions} setSessions={setSessions}
         setActivatePredict={setActivatePredict}
-      />
+      />  
       
       <Session 
         activeYear={activeYear}

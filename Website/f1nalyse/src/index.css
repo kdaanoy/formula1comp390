@@ -27,3 +27,14 @@
     --font-titiliumreg: TitiliumReg, "sans-serif";
     --font-titiliumbold: TitiliumBold, "sans-serif";
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1cfcf; /* F1 Red */
+  border-radius: 10px;
+}

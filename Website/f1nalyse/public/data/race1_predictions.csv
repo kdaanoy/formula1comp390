@@ -1,0 +1,23 @@
+Driver,Circuit,TrackLengthKm,NumCorners,IsStreetCircuit,isRookie,Team,QualifyingPosition,Last3Avg,Last5Avg,TeammateLast3Avg,TeammateLast5Avg,Average_Last_Season,Career_Average,DNFRate,LastYrTeamWCC,TeamEncoded,CircuitEncoded,Position
+Charles Leclerc,Albert Park Grand Prix Circuit,5.278,14,1,0,Ferrari,4,10,10,10,10,7.1,7.828947368421052,0.27631578947368424,2,4,0,5.9217687
+Kimi Antonelli,Albert Park Grand Prix Circuit,5.278,14,1,0,Mercedes,2,10,10,10,10,9.842105263157896,9.842105263157896,0.21052631578947367,4,7,0,6.158886
+Isack Hadjar,Albert Park Grand Prix Circuit,5.278,14,1,0,Red Bull,3,10,10,10,10,11.4,11.4,0.1,3,9,0,6.822191
+Lando Norris,Albert Park Grand Prix Circuit,5.278,14,1,0,McLaren,6,10,10,10,10,4.65,7.395522388059701,0.23880597014925373,1,6,0,7.333242
+Oscar Piastri,Albert Park Grand Prix Circuit,5.278,14,1,0,McLaren,5,10,10,10,10,4.7,6.918032786885246,0.06557377049180328,1,6,0,7.4891295
+Max Verstappen,Albert Park Grand Prix Circuit,5.278,14,1,0,Red Bull,20,10,10,10,10,3.75,4.2894736842105265,0.1118421052631579,3,9,0,7.842112
+Lewis Hamilton,Albert Park Grand Prix Circuit,5.278,14,1,0,Ferrari,7,10,10,10,10,8.6,4.86,0.06,2,4,0,7.84529
+Arvid Lindblad,Albert Park Grand Prix Circuit,5.278,14,1,1,RB F1 Team,9,10,10,10,10,10.0,10.0,0.5,8,8,0,8.723998
+Ollie Bearman,Albert Park Grand Prix Circuit,5.278,14,1,0,Haas F1 Team,12,10,10,10,10,10.0,10.0,0.5,7,5,0,9.602981
+Alex Albon,Albert Park Grand Prix Circuit,5.278,14,1,0,Williams,15,10,10,10,10,10.0,10.0,0.5,9,10,0,10.898465
+Liam Lawson,Albert Park Grand Prix Circuit,5.278,14,1,0,RB F1 Team,8,10,10,10,10,13.25,12.96551724137931,0.1724137931034483,8,8,0,11.123915
+George Russell,Albert Park Grand Prix Circuit,5.278,14,1,0,Mercedes,1,10,10,10,10,4.2,9.649253731343284,0.3880597014925373,4,7,0,11.178809
+Esteban Ocon,Albert Park Grand Prix Circuit,5.278,14,1,0,Haas F1 Team,13,10,10,10,10,12.55,11.545454545454545,0.3333333333333333,7,5,0,11.492308
+Carlos Sainz,Albert Park Grand Prix Circuit,5.278,14,1,0,Williams,21,10,10,10,10,12.6,8.536423841059603,0.304635761589404,9,10,0,12.573433
+Nico Hulkenberg,Albert Park Grand Prix Circuit,5.278,14,1,0,Audi,11,10,10,10,10,12.25,12.0,0.29411764705882354,10,2,0,12.579357
+Sergio Perez,Albert Park Grand Prix Circuit,5.278,14,1,0,Cadillac,18,10,10,10,10,10.0,7.869230769230769,0.2846153846153846,5,3,0,12.726794
+Fernando Alonso,Albert Park Grand Prix Circuit,5.278,14,1,0,Aston Martin,17,10,10,10,10,11.35,10.576271186440678,0.3559322033898305,5,1,0,12.957095
+Valtteri Bottas,Albert Park Grand Prix Circuit,5.278,14,1,0,Cadillac,19,10,10,10,10,10.0,9.340909090909092,0.19696969696969696,5,3,0,13.249716
+Gabriel Bortoleto,Albert Park Grand Prix Circuit,5.278,14,1,0,Audi,10,10,10,10,10,14.4,14.4,0.2,10,2,0,14.068901
+Pierre Gasly,Albert Park Grand Prix Circuit,5.278,14,1,0,Alpine F1 Team,14,10,10,10,10,14.55,12.046052631578947,0.3815789473684211,6,0,0,15.916612
+Franco Colapinto,Albert Park Grand Prix Circuit,5.278,14,1,0,Alpine F1 Team,16,10,10,10,10,16.2,15.043478260869565,0.13043478260869565,6,0,0,16.706749
+Lance Stroll,Albert Park Grand Prix Circuit,5.278,14,1,0,Aston Martin,22,10,10,10,10,13.31578947368421,12.165562913907285,0.40397350993377484,5,1,0,17.358006

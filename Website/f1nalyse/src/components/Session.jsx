@@ -77,6 +77,7 @@ export default function Session({
             sector1: circuit.Sector1,
             sector2: circuit.Sector2,
             sector3: circuit.Sector3,
+            filePath: circuit.FilePath
           },
         ]);
 
@@ -376,8 +377,9 @@ export default function Session({
         {displayData.map((row, i) => (
           <div
             key={i}
-            className={`grid grid-cols-[3.5rem_1fr_4rem] items-center w-full px-4 py-2 ${row.active ? "rounded-md bg-[#2d2d35]" : ""
-              }`}
+            className={`grid grid-cols-[3.5rem_1fr_4rem] items-center w-full px-4 py-2 ${
+              row.active ? "rounded-md bg-[#2d2d35]" : ""
+            }`}
           >
             <div className="flex items-center gap-3">
               <p className="font-formula1bold text-sm min-w-[15px]">
@@ -415,7 +417,7 @@ export default function Session({
               <div className="w-full flex justify-center py-6 gap-2">
                 <img
                   className="w-13 h-11 rounded-2xl pl-2"
-                  src={`/${row.country.toLowerCase()}.png`}
+                  src={`/photos/${row.country.toLowerCase()}.png`}
                 ></img>
                 <p className="font-formula1bold text-[28px] uppercase tracking-tighter">
                   {row.name}
@@ -439,75 +441,25 @@ export default function Session({
               </div>
 
               <div className="flex flex-col items-center relative py-1 pb-10">
-                <svg
-                  viewBox="0 0 400 300"
-                  className="w-[500px] translate-x-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <defs>
-                    <filter
-                      id="whiteGlow"
-                      x="-50%"
-                      y="-50%"
-                      width="200%"
-                      height="200%"
-                    >
-                      <feFlood
-                        flood-color="white"
-                        flood-opacity="0.8"
-                        result="white_flood"
-                      />
-                      <feGaussianBlur
-                        stdDeviation="6"
-                        in="SourceGraphic"
-                        result="blur_white"
-                      />
-                      <feComposite
-                        in="white_flood"
-                        in2="blur_white"
-                        operator="in"
-                        result="strong_white_glow"
-                      />
-
-                      <feMerge>
-                        <feMergeNode in="strong_white_glow" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-
-                  <path
-                    d={`${row.sector1}${row.sector2}${row.sector3}`}
-                    stroke="white"
-                    strokeWidth="12"
-                    fill="none"
-                    filter="url(#whiteGlow)"
-                    strokeLinecap="round"
+                {row.filePath ? (
+                  <img
+                    src={`/photos/${row.filePath}.avif`}
+                    className="w-[500px] rounded-lg translate-x-6 pt-12 pb-12"
                   />
-
-                  <path
-                    d={row.sector1}
-                    stroke={fastestTimes.s1Color || "#d400ff"}
-                    strokeWidth="3"
-                    fill="none"
-                  />
-
-                  <path
-                    d={row.sector2 ? `M ${row.sector2.slice(1)}` : ""}
-                    stroke={fastestTimes.s2Color || "#00ffbf"}
-                    strokeWidth="3"
-                    fill="none"
-
-                  />
-
-                  <path
-                    d={row.sector3 ? `M ${row.sector3.slice(1)}` : ""}
-                    stroke={fastestTimes.s3Color || "#ffee00"}
-                    strokeWidth="3"
-                    fill="none"
-
-                  />
-                </svg>
+                ) : (
+                  <svg
+                    viewBox="0 0 400 300"
+                    className="w-[500px] translate-x-6"
+                  >
+                    <path
+                      d={`${row.sector1}${row.sector2}${row.sector3}`}
+                      stroke="white"
+                      strokeWidth="12"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                )}
 
                 <div className="absolute bottom-5 flex gap-8">
                   <div className="text-center">

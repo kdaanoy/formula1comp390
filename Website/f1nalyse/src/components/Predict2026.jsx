@@ -6,34 +6,34 @@ import Papa from "papaparse";
 export default function Predict2026({ activatePredict, close }) {
 
     const [circuitgps, setCircuitGPs] = useState([]);
-    const [gpprediction, setGPPrediction] = useState([]);
+    const [gpprediction, setGPPrediction] = useState(1);
     const [predictionData, setPredictionData] = useState([]);
     const [teamColors, setTeamColors] = useState({});
 
-    const grandprixes = {"Australian Grand Prix": 1,
-        "Chinese Grand Prix": 2,
-        "Japanese Grand Prix": 3,
-        "Bahrain Grand Prix": 4,
-        "Saudi Arabian Grand Prix": 5,
-        "Miami Grand Prix": 6,
-        "Grand Prix du Canada": 7,
-        "Grand Prix de Monaco": 8,
-        "Barcelona-Catalunya Grand Prix": 9,
-        "Austrian Grand Prix": 10,
-        "British Grand Prix": 11,
-        "Belgian Grand Prix": 12,
-        "Hungarian Grand Prix": 13,
-        "Dutch Grand Prix": 14,
-        "Gran Premio d'Italia": 15,
-        "Azerbaijan Grand Prix": 16,
-        "Singapore Grand Prix": 17,
-        "United States Grand Prix": 18,
-        "Gran Premio de la Cicudad de México": 19,
-        "São Paulo Grand Prix": 20,
-        "Las Vegas Grand Prix": 21,
-        "Qatar Grand Prix": 22,
-        "Abu Dhabi Grand Prix": 23,
-    }
+    const grandprixes = [{name: "Australian Grand Prix", round: 1, date: "03/08/2026"},
+        {name: "Chinese Grand Prix", round: 2, date: "03/15/2026"},
+        {name: "Japanese Grand Prix", round: 3, date: "04/29/2026"},
+        {name: "Bahrain Grand Prix", round: 4, date: "04/12/2026"},
+        {name: "Saudi Arabian Grand Prix", round: 5, date: "04/19/2026"},
+        {name: "Miami Grand Prix", round: 6, date: "05/03/2026"},
+        {name: "Grand Prix du Canada", round: 7, date: "05/24/2026"},
+        {name: "Grand Prix de Monaco", round: 8, date: "06/07/2026"},
+        {name: "Barcelona-Catalunya Grand Prix", round: 9, date: "06/14/2026"},
+        {name: "Austrian Grand Prix", round: 10, date: "06/28/2026"},
+        {name: "British Grand Prix", round: 11, date: "07/05/2026"},
+        {name: "Belgian Grand Prix", round: 12, date: "07/19/2026"},
+        {name: "Hungarian Grand Prix", round: 13, date: "07/26/2026"},
+        {name: "Dutch Grand Prix", round: 14, date: "07/23/2026"},
+        {name: "Gran Premio d'Italia", round: 15, date: "09/06/2026"},
+        {name: "Azerbaijan Grand Prix", round: 16, date: "09/26/2026"},
+        {name: "Singapore Grand Prix", round: 17, date: "10/11/2026"},
+        {name: "United States Grand Prix", round: 18, date: "10/25/2026"},
+        {name: "Gran Premio de la Cicudad de México", round: 19, date: "11/01/2026"},
+        {name: "São Paulo Grand Prix", round: 20, date: "11/08/2026"},
+        {name: "Las Vegas Grand Prix", round: 21, date: "11/21/2026"},
+        {name: "Qatar Grand Prix", round: 22, date: "11/29/2026"},
+        {name: "Abu Dhabi Grand Prix", round: 23, date: "12/06/2026"}
+    ]
 
     useEffect(() => {
         fetch("/data/Circuit.csv").then((res) => res.text())
@@ -84,6 +84,11 @@ export default function Predict2026({ activatePredict, close }) {
         });
     }, [gpprediction]);
 
+    const today = new Date();
+    const accessible = (date) => {
+        return (today >= date);
+    }
+
     return (
     <div
         className={`fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/80 transition-all duration-300 ease-in-out
@@ -98,29 +103,41 @@ export default function Predict2026({ activatePredict, close }) {
         <div className="flex justify-between items-start w-full h-full ">
             
             <div className="flex flex-col grid-cols-1 gap-5 pl-30 overflow-y-auto pr-5 custom-scrollbar h-full">
-                {circuitgps.map((circuit, index) => (
-                    <button onClick={() => setGPPrediction(index+1)} key={index} className="relative w-[400px] h-[150px] border-[1px] rounded-[20px] bg-[#14131a] border-white/10 cursor-pointer flex-shrink-0">
-                        <div className="pb-4 pl-3">
-                            <div className="font-formula1bold border border-white/10 rounded-full bg-[#ff0800] text-white w-[120px]">
-                                ROUND {index + 1}
+                {circuitgps.map((circuit, index) => {
+                    const gpData = grandprixes.find(gp => circuit.OfficialName?.includes(gp.name));
+                    const showButton = gpData ? accessible(new Date(gpData.date)) : false;
+                    
+                    return (
+                        <button onClick={() => showButton && setGPPrediction(index+1)} key={index} className={`relative w-[400px] h-[150px] border-[1px] rounded-[20px] bg-[#14131a] 
+                        border-white/10 flex-shrink-0 ${showButton ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}>
+                            <div className="pb-4 pl-3">
+                                <div className="font-formula1bold border border-white/10 rounded-full bg-[#ff0800] text-white w-[120px]">
+                                    ROUND {index + 1}
+                                </div>
                             </div>
-                        </div>
 
-                        <h2 className="text-white font-formula1bold text-2xl uppercase tracking-tighter leading-none">
-                            {circuit.Name}
-                        </h2>
-                        <p className="text-gray-500 font-titiliumreg text-sm mt-2">
-                            {circuit.OfficialName}
-                        </p>
-                    </button>
-                ))}
+                            <h2 className="text-white font-formula1bold text-2xl uppercase tracking-tighter leading-none">
+                                {circuit.Name}
+                            </h2>
+                            <p className="text-gray-500 font-titiliumreg text-sm mt-2">
+                                {circuit.OfficialName}
+                            </p>
+                            {!showButton ? (
+                                <div>
+                                    Locked Until After Qualifying
+                                </div>
+                            ) : (null)}
+                        </button>
+                    )
+                    })
+                }
             </div>
 
             <div className="flex flex-col gap-2 items-center">
                 <div>
-                    <p className="text-white font-formula1bold text-lg mt-2">
-                        Predicted Finishing Order for the 2026 {circuitgps[gpprediction-1]?.Name} Grand Prix
-                    </p>
+                    <div className="text-white font-formula1bold text-[22px] mt-2 pb-10 flex items-center justify-center">
+                        <p>Predicted Finishing Order for the {grandprixes[gpprediction - 1]?.name} Grand Prix 2026</p>
+                    </div>
                     <h2 className="flex flex-row flex-wrap gap-3">
                         {predictionData.map((prediction, index) => {
                             const teamColor = teamColors[prediction.Team]
@@ -177,10 +194,11 @@ export default function Predict2026({ activatePredict, close }) {
                     </span>
                     <div className="flex items-center gap-3">
                         <p className="text-white font-formula1bold text-xs uppercase">
-                            {prediction.Driver} <span className="text-gray-500 p-1">|</span> {prediction.Team}
+                            {prediction.Driver} 
+                            <span className="text-gray-500 p-1">-</span> 
+                            <span style={{color: teamColor}}>{prediction.Team}</span>
                         </p>
                     </div>
-                    <div className="w-1 h-6 rounded-full" style={{ backgroundColor: teamColor }}></div>
                 </div>
             );
         })}

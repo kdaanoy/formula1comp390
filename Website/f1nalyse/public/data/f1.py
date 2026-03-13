@@ -242,9 +242,7 @@ def store_data(round):
             row = {"ID": last_lap_id, "SessionID": last_id + i, "DriverID": driver_id, "Sector1Time": sector1_time, "Sector2Time": sector2_time, "Sector3Time": sector3_time,
                    "FastestLapTime": fastest_lap, "LapTime": lap_time, "TyreCompound": tyre_compound, "LapNumber": lap_number, "LapTimeSeconds": lap_time.total_seconds()}
             
-            print(row)
             pd.DataFrame([row]).to_csv("Laps.csv", mode="a", header=False, index=False)
-            
             last_lap_id += 1
     
 def get_driver_data(year):

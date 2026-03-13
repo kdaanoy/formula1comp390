@@ -1,0 +1,22 @@
+[33m627c08d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: commit (cherry-pick): commit
+[33m1a88432[m HEAD@{1}: checkout: moving from 0069508901187ef46feac7953cdff28ff530c2b2 to main
+[33m0069508[m HEAD@{2}: commit: commit
+[33m09e9de0[m HEAD@{3}: commit: commit
+[33m3ca0eef[m HEAD@{4}: checkout: moving from main to 3ca0eeffd7bc023661c83145fe186ee7cbb23dee
+[33m1a88432[m HEAD@{5}: commit (merge): Merge branch 'main' of https://github.com/kdaanoy/F1nalyse
+[33me5037e4[m HEAD@{6}: commit: commit
+[33mb99e52e[m HEAD@{7}: commit: commit
+[33m3ca0eef[m HEAD@{8}: pull --tags origin main: Fast-forward
+[33m731b20e[m HEAD@{9}: commit: commt
+[33mfc9adc2[m HEAD@{10}: commit: commit
+[33m71dc23b[m HEAD@{11}: pull --tags origin main: Fast-forward
+[33md87e41d[m HEAD@{12}: commit: commit
+[33mb80c959[m HEAD@{13}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33m7da0261[m HEAD@{14}: commit: commit
+[33m83549ff[m HEAD@{15}: commit: commit
+[33m31c08ae[m HEAD@{16}: commit: commit
+[33m4b0e9bb[m HEAD@{17}: commit: commit
+[33m15a8229[m HEAD@{18}: commit: commit
+[33mc5e92a1[m HEAD@{19}: commit: commit
+[33mc31603a[m HEAD@{20}: commit: updated
+[33m505e248[m HEAD@{21}: clone: from https://github.com/kdaanoy/F1nalyse.git

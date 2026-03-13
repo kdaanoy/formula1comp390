@@ -11,7 +11,7 @@ on:
         required: false
 
 jobs:
-  f1-flexible:
+  f1-update:
     runs-on: ubuntu-latest
 
     steps:

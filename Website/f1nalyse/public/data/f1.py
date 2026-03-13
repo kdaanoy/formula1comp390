@@ -239,7 +239,7 @@ def store_data(round):
                 fastest_lap = 0
             tyre_compound = lap['Compound']
             
-            row = {"ID": last_lap_id + i, "SessionID": last_id + 1, "DriverID": driver_id, "Sector1Time": sector1_time, "Sector2Time": sector2_time, "Sector3Time": sector3_time,
+            row = {"ID": last_lap_id, "SessionID": last_id + i, "DriverID": driver_id, "Sector1Time": sector1_time, "Sector2Time": sector2_time, "Sector3Time": sector3_time,
                    "FastestLapTime": fastest_lap, "LapTime": lap_time, "TyreCompound": tyre_compound, "LapNumber": lap_number, "LapTimeSeconds": lap_time.total_seconds()}
             
             print(row)

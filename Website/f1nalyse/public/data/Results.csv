@@ -14644,6 +14644,7 @@ ResultID,SessionID,Position,Driver,TimeGap,FinishingTime
 14643,752,18,Liam Lawson,"4.659",5172.128
 14644,752,19,Pierre Gasly,"11.908",5179.377
 14645,752,20,Franco Colapinto,"14.003",5181.472
+<<<<<<< HEAD
 14646,753,1,Charles Leclerc,80.267,80.267
 14647,753,2,Lewis Hamilton,0.469,80.736
 14648,753,3,Max Verstappen,0.522,80.789
@@ -14923,3 +14924,5 @@ ResultID,SessionID,Position,Driver,TimeGap,FinishingTime
 14921,765,22,Sergio Perez,39.077,118.806
 =======
 >>>>>>> 7a82fb6a2266aecdb6497b4d089416a304550168
+=======
+>>>>>>> 0069508 (commit)

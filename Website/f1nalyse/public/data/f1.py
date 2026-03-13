@@ -33,6 +33,7 @@ drivers_2026 = pd.DataFrame({
 
 def store_data(round):
     resultID = dfresults["ResultID"].iloc[-1] + 1
+    last_lap_id = dflaps["LapID"].iloc[-1] + 1
 
     for i in range (1, 6):
         session = fastf1.get_session(2026, round, i)
@@ -203,9 +204,6 @@ def store_data(round):
                 resultID += 1
 
         for indx, lap in laps.iterlaps():
-
-            last_lap_id = dflaps["LapID"].iloc[-1]
-
             lap_number = lap['LapNumber']
             driver_code = lap['Driver']
             driver_name = session.get_driver(driver_code)["FullName"]
@@ -246,6 +244,8 @@ def store_data(round):
             
             print(row)
             pd.DataFrame([row]).to_csv("Laps.csv", mode="a", header=False, index=False)
+            
+            last_lap_id += 1
     
 def get_driver_data(year):
     # for index, row in dfcircuits.iterrows():

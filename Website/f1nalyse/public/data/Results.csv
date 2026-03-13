@@ -14856,6 +14856,7 @@ ResultID,SessionID,Position,Driver,TimeGap,FinishingTime
 14855,762,20,Isack Hadjar,,
 14856,762,21,Oscar Piastri,,
 14857,762,22,Nico Hulkenberg,,
+<<<<<<< HEAD
 14858,763,1,Charles Leclerc,80.267,80.267
 14859,763,2,Lewis Hamilton,0.469,80.736
 14860,763,3,Max Verstappen,0.522,80.789
@@ -14920,3 +14921,5 @@ ResultID,SessionID,Position,Driver,TimeGap,FinishingTime
 14919,765,20,Fernando Alonso,4.933,84.662
 14920,765,21,Lance Stroll,6.087,85.816
 14921,765,22,Sergio Perez,39.077,118.806
+=======
+>>>>>>> 7a82fb6a2266aecdb6497b4d089416a304550168
